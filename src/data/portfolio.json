@@ -44,14 +44,14 @@
       {
         "title": "DevOps Engineer",
         "company": "Xminds Infotech Pvt.Ltd",
-        "period": "07.2020 - 08.2022",
+        "period": "07.2021 - 08.2022",
         "description": "Implemented CI/CD pipelines, containerized applications, and optimizing Microservices architectures.",
         "technologies": ["AWS|DigitalOcean", "PostgreSQL|MySQL", "Nginx|Apache", "Docker|Kubernetes", "Jenkins", "GitOps", "Microservices"]
       },
       {
         "title": "Linux System Administrator",
         "company": "POSibolt Solutions Pvt.Ltd",
-        "period": "02.2018 - 07.2020",
+        "period": "02.2018 - 07.2021",
         "description": "Managed Linux servers, automated routine tasks, and ensured system security and performance. Developed scripts for system monitoring and maintenance. Implemented CI/CD pipelines for application deployments.",
         "technologies": ["Linux", "Bash Scripting", "Docker", "Jenkins", "Nagios", "Python", "Subversion"]
       }
