@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { 
   Github, 
   Linkedin, 
@@ -186,10 +186,10 @@ function App() {
                   <button
                     key={section}
                     onClick={() => scrollToSection(section)}
-                    className={`capitalize text-left py-2 px-3 rounded-lg transition-all duration-300 ${
+                    className={`capitalize text-left py-3.5 px-5 rounded-lg transition-all duration-300 font-bold text-base ${
                       activeSection === section 
-                        ? 'text-blue-400 font-semibold bg-blue-900/20' 
-                        : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+                        ? 'text-blue-300 bg-blue-900/50 border-2 border-blue-500/60 shadow-xl shadow-blue-900/30' 
+                        : 'text-white bg-gray-700/90 hover:text-blue-200 hover:bg-gray-600/90 border-2 border-gray-500/60 shadow-lg'
                     }`}
                   >
                     {section === 'hero' ? data.navigation.homeLabel : section}
