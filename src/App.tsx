@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { 
   Github, 
   Linkedin, 
@@ -23,80 +23,122 @@ function App() {
 
   const data = portfolioData as PortfolioData;
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const sections = data.navigation.sections;
-      const scrollPosition = window.scrollY + 100;
+  // Memoize navigation sections to avoid recreating on each render
+  const navigationSections = useMemo(() => data.navigation.sections, [data.navigation.sections]);
 
-      for (const section of sections) {
-        const element = document.getElementById(section);
-        if (element) {
-          const offsetTop = element.offsetTop;
-          const offsetBottom = offsetTop + element.offsetHeight;
-          
-          if (scrollPosition >= offsetTop && scrollPosition < offsetBottom) {
-            setActiveSection(section);
-            break;
-          }
+  // Memoize icon mapping to avoid recreating object on each render
+  const iconMap = useMemo(() => ({
+    "Cloud Architecture": Cloud,
+    "Infrastructure": Server,
+    "Security": Shield,
+    "Monitoring": Activity
+  }), []);
+
+  // Memoize contact icon mapping
+  const contactIconMap = useMemo(() => ({
+    "Email": Mail,
+    "LinkedIn": Linkedin,
+    "GitHub": Github
+  }), []);
+
+  // Throttle function for scroll handler
+  const throttleRef = useRef<number | null>(null);
+  const lastScrollTime = useRef<number>(0);
+  const throttleDelay = 100; // 100ms throttle
+
+  // Extracted scroll check logic
+  const performScrollCheck = useCallback(() => {
+    const scrollPosition = window.scrollY + 100;
+    for (const section of navigationSections) {
+      const element = document.getElementById(section);
+      if (element) {
+        const offsetTop = element.offsetTop;
+        const offsetBottom = offsetTop + element.offsetHeight;
+        
+        if (scrollPosition >= offsetTop && scrollPosition < offsetBottom) {
+          setActiveSection(section);
+          break;
         }
       }
-    };
+    }
+  }, [navigationSections]);
 
-    // Intersection Observer for persistent animations
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        const sectionId = entry.target.id;
-        if (entry.isIntersecting) {
-          setIsVisible(prev => ({
-            ...prev,
-            [sectionId]: true
-          }));
-        } else {
-          // Reset animation when section leaves viewport
-          setIsVisible(prev => ({
-            ...prev,
-            [sectionId]: false
-          }));
+  // Memoized scroll handler with throttling
+  const handleScroll = useCallback(() => {
+    const now = Date.now();
+    if (now - lastScrollTime.current < throttleDelay) {
+      if (throttleRef.current) {
+        cancelAnimationFrame(throttleRef.current);
+      }
+      throttleRef.current = requestAnimationFrame(() => {
+        if (Date.now() - lastScrollTime.current >= throttleDelay) {
+          performScrollCheck();
         }
       });
-    }, observerOptions);
+      return;
+    }
+    lastScrollTime.current = now;
+    performScrollCheck();
+  }, [performScrollCheck]);
+
+  // Memoized Intersection Observer callback
+  const handleIntersection = useCallback((entries: IntersectionObserverEntry[]) => {
+    entries.forEach((entry) => {
+      const sectionId = entry.target.id;
+      if (entry.isIntersecting) {
+        setIsVisible(prev => ({
+          ...prev,
+          [sectionId]: true
+        }));
+      } else {
+        // Reset animation when section leaves viewport
+        setIsVisible(prev => ({
+          ...prev,
+          [sectionId]: false
+        }));
+      }
+    });
+  }, []);
+
+  // Memoized observer options
+  const observerOptions = useMemo(() => ({
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  }), []);
+
+  useEffect(() => {
+    // Intersection Observer for persistent animations
+    const observer = new IntersectionObserver(handleIntersection, observerOptions);
 
     // Observe all sections
-    const sections = data.navigation.sections;
-    sections.forEach(section => {
+    navigationSections.forEach(section => {
       const element = document.getElementById(section);
       if (element) observer.observe(element);
     });
 
-    handleScroll();
-    window.addEventListener('scroll', handleScroll);
+    // Initial scroll check
+    performScrollCheck();
+    
+    // Add scroll listener with passive option for better performance
+    window.addEventListener('scroll', handleScroll, { passive: true });
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      if (throttleRef.current) {
+        cancelAnimationFrame(throttleRef.current);
+      }
       observer.disconnect();
     };
-  }, [data.navigation.sections]);
+  }, [navigationSections, handleScroll, handleIntersection, observerOptions, performScrollCheck]);
 
-  const scrollToSection = (sectionId: string) => {
+  // Memoized scroll to section handler
+  const scrollToSection = useCallback((sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
       setIsMobileMenuOpen(false);
     }
-  };
-
-  // Icon mapping for expertise items
-  const iconMap = {
-    "Cloud Architecture": Cloud,
-    "Infrastructure": Server,
-    "Security": Shield,
-    "Monitoring": Activity
-  };
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-900 text-white overflow-x-hidden">
@@ -108,7 +150,7 @@ function App() {
             
             {/* Desktop Navigation */}
             <div className="hidden lg:flex space-x-6 xl:space-x-8">
-              {data.navigation.sections.map((section, index) => (
+              {navigationSections.map((section, index) => (
                 <button
                   key={section}
                   onClick={() => scrollToSection(section)}
@@ -128,8 +170,9 @@ function App() {
 
             {/* Mobile Menu Button */}
             <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              onClick={() => setIsMobileMenuOpen(prev => !prev)}
               className="lg:hidden p-2 text-gray-400 hover:text-white transition-colors duration-300"
+              aria-label="Toggle mobile menu"
             >
               {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -139,7 +182,7 @@ function App() {
           {isMobileMenuOpen && (
             <div className="lg:hidden absolute top-full left-0 right-0 bg-gray-900/98 backdrop-blur-md border-b border-gray-800/50 py-4">
               <div className="flex flex-col space-y-3 px-4">
-                {data.navigation.sections.map((section) => (
+                {navigationSections.map((section) => (
                   <button
                     key={section}
                     onClick={() => scrollToSection(section)}
@@ -173,11 +216,19 @@ function App() {
               <div className="relative mx-auto mb-6 sm:mb-8 w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56">
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 rounded-full animate-gradient-x p-0.5 sm:p-1">
                   <div className="w-full h-full bg-gray-900 rounded-full p-1 sm:p-2">
-                    <img
-                      src={data.personal.profileImage}
-                      alt={data.personal.altText}
-                      className="w-full h-full object-cover rounded-full transition-all duration-500 hover:scale-105"
-                    />
+                    <picture>
+                      <source srcSet={data.personal.profileImage} type="image/webp" />
+                      <img
+                        src="/photo.JPG"
+                        alt={data.personal.altText}
+                        width="224"
+                        height="224"
+                        className="w-full h-full object-cover rounded-full transition-all duration-500 hover:scale-105"
+                        loading="eager"
+                        fetchPriority="high"
+                        decoding="async"
+                      />
+                    </picture>
                   </div>
                 </div>
                 
@@ -403,7 +454,7 @@ function App() {
             
             <div className={`flex flex-col sm:flex-row flex-wrap justify-center gap-3 sm:gap-4 lg:gap-6 mb-8 sm:mb-12 transition-all duration-1000 delay-400 transform ${isVisible.contact ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}>
               {data.contact.links.map((contact, index) => {
-                const IconComponent = contact.label === "Email" ? Mail : contact.label === "LinkedIn" ? Linkedin : Github;
+                const IconComponent = contactIconMap[contact.label as keyof typeof contactIconMap] || Mail;
                 return (
                   <a
                     key={index}
