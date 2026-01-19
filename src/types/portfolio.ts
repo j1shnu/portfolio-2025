@@ -29,17 +29,19 @@ export interface Job {
   title: string;
   company: string;
   period: string;
-  description: string;
+  description: string | string[];
   technologies: string[];
 }
 
 export interface Experience {
   title: string;
+  description: string;
   jobs: Job[];
 }
 
 export interface Skills {
   title: string;
+  description: string;
   categories: { [key: string]: string[] };
 }
 
@@ -52,6 +54,7 @@ export interface Project {
 
 export interface Projects {
   title: string;
+  description: string;
   items: Project[];
 }
 

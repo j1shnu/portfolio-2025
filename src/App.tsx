@@ -342,9 +342,12 @@ function App() {
       <section id="experience" className="py-12 sm:py-16 lg:py-20 relative px-4 sm:px-6">
         <div className="max-w-6xl mx-auto">
           <div className={`transition-all duration-1000 transform ${isVisible.experience ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-center mb-8 sm:mb-12 lg:mb-16 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-center mb-3 sm:mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
               {data.experience.title}
             </h2>
+            <p className="text-sm sm:text-base text-gray-400 text-center mb-8 sm:mb-12 lg:mb-16 max-w-3xl mx-auto">
+              {data.experience.description}
+            </p>
           </div>
           
           <div className="relative">
@@ -362,7 +365,15 @@ function App() {
                       {exp.period}
                     </span>
                   </div>
-                  <p className="text-sm sm:text-base text-gray-300 mb-4 sm:mb-6 leading-relaxed group-hover:text-gray-200 transition-colors duration-300">{exp.description}</p>
+                  {Array.isArray(exp.description) ? (
+                    <ul className="text-sm sm:text-base text-gray-300 mb-4 sm:mb-6 leading-relaxed group-hover:text-gray-200 transition-colors duration-300 list-disc list-inside space-y-1">
+                      {exp.description.map((item, descIndex) => (
+                        <li key={descIndex}>{item}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-sm sm:text-base text-gray-300 mb-4 sm:mb-6 leading-relaxed group-hover:text-gray-200 transition-colors duration-300">{exp.description}</p>
+                  )}
                   <div className="flex flex-wrap gap-2 sm:gap-3">
                     {exp.technologies.map((tech, techIndex) => (
                       <span key={techIndex} className="bg-blue-900/30 text-blue-300 px-2 sm:px-3 lg:px-4 py-1 sm:py-2 rounded-full text-xs sm:text-sm border border-blue-800/30 hover:bg-blue-800/40 hover:scale-105 transition-all duration-300 cursor-default">
@@ -381,9 +392,12 @@ function App() {
       <section id="skills" className="py-12 sm:py-16 lg:py-20 bg-gradient-to-b from-gray-900 to-gray-800 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto">
           <div className={`transition-all duration-1000 transform ${isVisible.skills ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-center mb-8 sm:mb-12 lg:mb-16 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-center mb-3 sm:mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
               {data.skills.title}
             </h2>
+            <p className="text-sm sm:text-base text-gray-400 text-center mb-8 sm:mb-12 lg:mb-16 max-w-3xl mx-auto">
+              {data.skills.description}
+            </p>
           </div>
           
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
@@ -408,9 +422,12 @@ function App() {
       <section id="projects" className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto">
           <div className={`transition-all duration-1000 transform ${isVisible.projects ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-center mb-8 sm:mb-12 lg:mb-16 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-center mb-3 sm:mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
               {data.projects.title}
             </h2>
+            <p className="text-sm sm:text-base text-gray-400 text-center mb-8 sm:mb-12 lg:mb-16 max-w-3xl mx-auto">
+              {data.projects.description}
+            </p>
           </div>
           
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">

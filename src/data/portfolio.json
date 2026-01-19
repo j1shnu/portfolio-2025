@@ -1,117 +1,120 @@
 {
   "personal": {
     "name": "Jishnu Prasad",
-    "title": "DevOps Engineer & Site Reliability Expert",
-    "tagline": "Scaling infrastructure, automating everything, and ensuring reliability at enterprise scale. Passionate about cloud-native technologies and building resilient systems that power the future.",
+    "title": "Senior DevOps / Site Reliability Engineer",
+    "tagline": "I design and operate reliable Kubernetes and cloud platforms at production scale, with deep hands-on experience across AWS, CI/CD, observability, and incident response.",
     "profileImage": "/photo.webp",
-    "altText": "Jishnu Prasad - DevOps Engineer"
+    "altText": "Jishnu Prasad - Sr. DevOps Engineer"
   },
   "about": {
     "title": "About Jishnu",
     "description": [
-      "With over 7+ years of experience in DevOps, Cloud Infrastructure, and Site Reliability Engineering, I specialize in building and maintaining scalable, reliable systems that power modern applications.",
-      "My expertise spans across cloud platforms, container orchestration, infrastructure automation, and implementing robust monitoring and alerting systems. I'm passionate about creating efficient CI/CD pipelines and fostering a culture of reliability and continuous improvement."
+      "I'm a Senior DevOps / Site Reliability Engineer with 8+ years of experience designing and operating production-scale Kubernetes and cloud platforms.",
+      "I focus on reliability, automation, and observability, owning systems end-to-end from infrastructure design and CI/CD to monitoring and incident response. I've worked extensively with AWS, Kubernetes, and infrastructure as code, building stable, predictable systems that scale with teams and traffic."
     ],
     "stats": [
-      { "number": "7+", "label": "Years Experience", "color": "text-blue-400" },
-      { "number": "99.9%", "label": "Uptime Maintained", "color": "text-green-400" },
+      { "number": "8+", "label": "Years Experience", "color": "text-blue-400" },
+      { "number": "99.9%+", "label": "Availability Targets Met", "color": "text-green-400" },
       { "number": "20+", "label": "Projects Delivered", "color": "text-purple-400" }
     ],
     "expertise": [
-      { "title": "Cloud(AWS)", "desc": "Expertise in designing and implementing scalable architectures on AWS", "color": "text-blue-400" },
-      { "title": "Infrastructure", "desc": "Scalable and resilient system design", "color": "text-green-400" },
-      { "title": "Security", "desc": "Security best practices and compliance", "color": "text-red-400" },
-      { "title": "Monitoring", "desc": "Observability and performance optimization", "color": "text-purple-400" }
+      { "title": "Cloud(AWS)", "desc": "Designing and operating reliable, cost-efficient production workloads on AWS.", "color": "text-blue-400" },
+      { "title": "Infrastructure", "desc": "Building scalable, resilient infrastructure using IaaC and automation.", "color": "text-green-400" },
+      { "title": "Security", "desc": "Applying security best practices across infrastructure, CI/CD, and runtime environments.", "color": "text-red-400" },
+      { "title": "Monitoring", "desc": "Implementing metrics, logs, and alerts to support fast detection and incident response.", "color": "text-purple-400" }
     ]
   },
   "experience": {
     "title": "Experience Journey",
+    "description": "A progression from Linux systems engineering to DevOps and Site Reliability Engineering, with increasing ownership of scale, automation, and production reliability.",
     "jobs": [
       {
         "title": "Senior Site Reliability Engineer",
         "company": "Netskope Inc.",
         "period": "04.2025 - Present",
-        "description": "Leading the SRE team to enhance system reliability, automate infrastructure management, and implement best practices for applications architecture. Focused on performance optimization and incident response.",
-        "technologies": ["Kubernetes", "Prometheus", "Grafana", "Python", "Ansible", "GitOps"]
+        "description": ["Led SRE initiatives across 100+ Kubernetes clusters, improving reliability and consistency of multi-cluster production workloads.", "Built Python-based automation to validate services and reduce manual testing across teams.", "Designed and operated Prometheus/Grafana observability and alerting, improving incident detection and reducing MTTR.", "Standardized pipeline-as-code using Jenkins and Drone CI to enable repeatable, compliant deployments."],
+        "technologies": ["Kubernetes", "Observability", "Automation", "CI/CD", "Incident Response"]
       },
       {
         "title": "Cloud Support Engineer | EC2 Linux SME",
         "company": "Amazon Web Services (AWS)",
         "period": "08.2022 - 04.2025",
-        "description": "Provided expert-level support for various AWS services, resolving complex issues, optimizing performance, and enhancing customer satisfaction through proactive solutions.",
-        "technologies": ["Core Linux", "AWS Services for automations", "Shell Scripting", "Python", "Technical Support Engineering"]
+        "description": ["Acted as Tier-3 AWS & Linux escalation engineer, resolving complex EC2, OS, and networking failures for enterprise customers.", "Built Python-based automation tools using AWS services, reducing manual intervention by ~40%.", "Troubleshot critical boot, performance, and networking issues under high-severity operational scenarios.", "Led customer launches, authored RCAs, and supported large-scale production events under AWS Premium Support."],
+        "technologies": ["Linux", "AWS", "Automation", "Incident Management", "Technical Support Engineering"]
       },
       {
         "title": "DevOps Engineer",
         "company": "Xminds Infotech Pvt.Ltd",
         "period": "07.2021 - 08.2022",
-        "description": "Implemented CI/CD pipelines, containerized applications, and optimizing Microservices architectures.",
-        "technologies": ["AWS|DigitalOcean", "PostgreSQL|MySQL", "Nginx|Apache", "Docker|Kubernetes", "Jenkins", "GitOps", "Microservices"]
+        "description": ["Managed Linux infrastructure across AWS, GCP, and DigitalOcean, supporting production workloads.", "Introduced Docker-based containerization, reducing deployment time by ~40%.", "Implemented blue-green Kubernetes deployments, enabling zero-downtime releases.", "Automated CI/CD and infrastructure provisioning, significantly reducing manual effort and deployment errors."],
+        "technologies": ["Kubernetes", "Docker", "Terraform", "CI/CD", "Cloud Platforms"]
       },
       {
         "title": "Linux System Administrator",
         "company": "POSibolt Solutions Pvt.Ltd",
         "period": "02.2018 - 07.2021",
-        "description": "Managed Linux servers, automated routine tasks, and ensured system security and performance. Developed scripts for system monitoring and maintenance. Implemented CI/CD pipelines for application deployments.",
-        "technologies": ["Linux", "Bash Scripting", "Docker", "Jenkins", "Nagios", "Python", "Subversion"]
+        "description": ["Built strong Linux and automation foundations, managing networking services and production servers.", "Automated package creation and deployments, achieving 99.9% successful release rates.", "Developed Shell and Python automation to reduce manual operations and improve efficiency.", "Introduced CI/CD pipelines and monitoring, reducing downtime and improving system visibility."],
+        "technologies": ["Linux", "Automation", "CI/CD", "Monitoring", "Scripting"]
       }
     ]
   },
   "skills": {
     "title": "Technical Arsenal",
+    "description": "Tools and technologies used to build, operate, and scale production systems.",
     "categories": {
       "Cloud Platforms": ["AWS", "DigitalOcean", "Google Cloud"],
       "Container & Orchestration": ["Docker", "Kubernetes", "Helm"],
       "Infrastructure as Code": ["Terraform", "CloudFormation", "Ansible"],
-      "CI/CD & DevOps": ["Jenkins", "BitBucket Pipeline", "GitHub Actions"],
-      "Monitoring & Observability": ["Prometheus", "Grafana", "ELK Stack"],
-      "Programming & Scripting": ["Python", "Go", "Bash", "JavaScript", "TypeScript"]
+      "CI/CD & DevOps": ["Jenkins", "Bitbucket Pipeline", "GitHub Actions", "Drone CI"],
+      "Observability": ["Prometheus", "Grafana", "ELK/EFK Stack", "Kibana/SumoLogic"],
+      "Programming & Scripting": ["Python", "Go", "Bash", "JavaScript/TypeScript"]
     }
   },
   "projects": {
     "title": "Featured Projects",
+    "description": "Selected projects focused on improving reliability, automation, and operational efficiency in production systems.",
     "items": [
       {
         "title": "Automated CI/CD Framework",
-        "description": "Engineered an efficient CI/CD framework using Jenkins alongside BitBucket Pipelines and GitHub Workflows.",
-        "technologies": ["Python", "AWS", "Docker", "Bash Scripting"],
-        "impact": "Reduced deployment time by 50% and improved code integration rates by over one third"
+        "description": "Designed and standardized a CI/CD framework across Jenkins, Bitbucket Pipelines, and GitHub Actions to enable consistent, repeatable deployments at scale.",
+        "technologies": ["CI/CD", "Automation", "Reliability", "GitOps"],
+        "impact": "Reduced deployment time by 50% and improved integration reliability across teams."
       },
       {
         "title": "Automated EC2 Instance Patching",
-        "description": "Automated EC2 instance patching using Patch Manager and Boto3.",
-        "technologies": ["Python", "AWS", "Boto3", "Bash Scripting"],
-        "impact": "Enhanced security posture and compliance with industry standards. Reduced manual effort by 60%"
+        "description": "Built automated EC2 patching using AWS Patch Manager, Lambda, DynamoDB, CloudFormation and Python (Boto3), ensuring consistent security updates and compliance across environments.",
+        "technologies": ["AWS", "Automation", "Security", "Compliance"],
+        "impact": "Improved security posture and reduced manual operational effort by 60%."
       },
       {
         "title": "Kubernetes Microservices Deployment",
-        "description": "Deployed FastAPI microservices on Kubernetes, utilizing rolling updates and Horizontal Pod Autoscaler (HPA) to achieve reduction in downtime.",
-        "technologies": ["Jenkins", "Docker", "Kubernetes", "FastAPI", "Python"],
-        "impact": "Achieved a 60% reduction in downtime and a 90% reduction in deployment time"
+        "description": "Deployed and operated FastAPI microservices on Kubernetes with rolling updates and HPA to support zero-downtime releases and traffic spikes.",
+        "technologies": ["Kubernetes", "Availability", "Scaling", "Microservices"],
+        "impact": "Reduced downtime by 60% and cut deployment time by 90%."
       },
       {
         "title": "Cross-Platform DB Backup & Restore GUI App",
-        "description": "Developed a cross-platform DB backup and restore GUI app using Tkinter (Python), which helped end users easily take backups and restore their databases when required.",
-        "technologies": ["Tkinter", "Python"],
-        "impact": "Simplified database management for end users, reducing support requests by 40%"
+        "description": "Built a cross-platform database backup and restore GUI in Python to reduce manual intervention and simplify routine operational tasks.",
+        "technologies": ["Automation", "Python", "Operations", "Toil Reduction"],
+        "impact": "Reduced support requests and manual database operations by 40%."
       },
       {
         "title": "Customized Ubuntu ISO Creation",
-        "description": "Created customized Ubuntu ISOs for end users using Cubic (Custom Ubuntu ISO Creator), pre-installed with necessary applications and configurations.",
-        "technologies": ["Cubic", "Ubuntu", "Python", "Bash Scripting"],
-        "impact": "Streamlined system setup for new users, reducing setup time by 60% and improving user experience"
+        "description": "Created standardized Ubuntu ISOs with preconfigured tooling to accelerate system provisioning and enforce consistent environments.",
+        "technologies": ["Platform Engineering", "Automation", "Linux"],
+        "impact": "Reduced setup time by 60% and improved onboarding reliability for new users."
       },
       {
         "title": "Jenkins Job Management Bot",
-        "description": "Created a Telegram bot for managing Jenkins jobs, allowing engineers to remotely trigger and monitor job status directly from their smartphones.",
-        "technologies": ["Python", "Jenkins", "Telegram API"],
-        "impact": "Improved team productivity by enabling remote job management, reducing the need for constant desktop access"
+        "description": "Developed a Telegram bot to trigger and monitor Jenkins jobs remotely, improving operational responsiveness during releases and incidents.",
+        "technologies": ["Automation", "CI/CD", "Productivity", "Incident Support"],
+        "impact": "Improved team productivity by enabling remote job control without constant desktop access."
       }
     ]
   },
   "contact": {
     "title": "Let's Connect",
-    "description": "I'm always interested in discussing new opportunities, innovative projects, or just chatting about the latest in DevOps and cloud technologies. Let's build something amazing together!",
+    "description": "Open to senior DevOps and Site Reliability roles, platform engineering work, and operating production systems at scale — globally, with full relocation flexibility.",
     "links": [
       { "label": "Email", "href": "mailto:jishnu.prasad4@gmail.com", "color": "from-red-600 to-red-700" },
       { "label": "LinkedIn", "href": "https://linkedin.com/in/j1shnu", "color": "from-blue-600 to-blue-700" },
@@ -124,8 +127,8 @@
   },
   "footer": {
     "name": "Jishnu Prasad",
-    "title": "DevOps Engineer & Site Reliability Expert",
-    "copyright": "© 2025 Jishnu Prasad. Built with React, TypeScript, and Tailwind CSS. Deployed with love ❤️"
+    "title": "Senior DevOps / Site Reliability Engineer",
+    "copyright": "© 2026 Jishnu Prasad. Built with React, TypeScript, and Tailwind CSS. Deployed with love ❤️"
   },
   "navigation": {
     "sections": ["hero", "about", "experience", "skills", "projects", "contact"],
