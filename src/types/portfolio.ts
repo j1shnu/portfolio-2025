@@ -50,6 +50,8 @@ export interface Project {
   description: string;
   technologies: string[];
   impact: string;
+  repo?: string;
+  internal?: boolean;
 }
 
 export interface Projects {

@@ -11,7 +11,8 @@ import {
   Activity,
   Terminal,
   Menu,
-  X
+  X,
+  ExternalLink
 } from 'lucide-react';
 import portfolioData from './data/portfolio.json';
 import { PortfolioData } from './types/portfolio';
@@ -31,7 +32,7 @@ function App() {
     "Cloud Architecture": Cloud,
     "Infrastructure": Server,
     "Security": Shield,
-    "Monitoring": Activity
+    "Reliability": Activity
   }), []);
 
   // Memoize contact icon mapping
@@ -447,6 +448,25 @@ function App() {
                     💡 Impact: {project.impact}
                   </div>
                 </div>
+                {project.repo && (
+                  <a
+                    href={project.repo}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 text-xs sm:text-sm font-semibold transition-all duration-300 hover:gap-3 ${isVisible.projects ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
+                    style={{transitionDelay: `${index * 200 + 400}ms`}}
+                  >
+                    <Github size={16} className="sm:w-5 sm:h-5" />
+                    View Repository
+                    <ExternalLink size={14} className="sm:w-4 sm:h-4" />
+                  </a>
+                )}
+                {project.internal && !project.repo && (
+                  <div className={`inline-flex items-center gap-2 text-gray-400 text-xs sm:text-sm font-semibold ${isVisible.projects ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`} style={{transitionDelay: `${index * 200 + 400}ms`}}>
+                    <Shield size={16} className="sm:w-5 sm:h-5" />
+                    Internal/Proprietary
+                  </div>
+                )}
               </div>
             ))}
           </div>

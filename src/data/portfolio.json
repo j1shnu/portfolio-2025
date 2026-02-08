@@ -1,7 +1,7 @@
 {
   "personal": {
     "name": "Jishnu Prasad",
-    "title": "Senior DevOps / Site Reliability Engineer",
+    "title": "Senior SRE / Platform Engineer",
     "tagline": "I design and operate reliable Kubernetes and cloud platforms at production scale, with deep hands-on experience across AWS, CI/CD, observability, and incident response.",
     "profileImage": "/photo.webp",
     "altText": "Jishnu Prasad - Sr. DevOps Engineer"
@@ -9,19 +9,21 @@
   "about": {
     "title": "About Jishnu",
     "description": [
-      "I'm a Senior DevOps / Site Reliability Engineer with 8+ years of experience designing and operating production-scale Kubernetes and cloud platforms.",
-      "I focus on reliability, automation, and observability, owning systems end-to-end from infrastructure design and CI/CD to monitoring and incident response. I've worked extensively with AWS, Kubernetes, and infrastructure as code, building stable, predictable systems that scale with teams and traffic."
+      "I'm a Senior Site Reliability / Platform Engineer with 8+ years of experience designing and operating production-scale Kubernetes (100+ clusters) and cloud platforms.",
+      "I focus on reliability, automation, and observability from defining SLOs and building CI/CD pipelines to GitOps workflows and incident response. My background spans Linux systems engineering, AWS, and infrastructure as code, building stable, predictable systems that scale with teams and traffic."
     ],
     "stats": [
       { "number": "8+", "label": "Years Experience", "color": "text-blue-400" },
       { "number": "99.9%+", "label": "Availability Targets Met", "color": "text-green-400" },
-      { "number": "20+", "label": "Projects Delivered", "color": "text-purple-400" }
+      { "number": "20+", "label": "Projects Delivered", "color": "text-purple-400" },
+      { "number": "100+", "label": "K8s Clusters Managed", "color": "text-orange-400" }
     ],
     "expertise": [
       { "title": "Cloud(AWS)", "desc": "Designing and operating reliable, cost-efficient production workloads on AWS.", "color": "text-blue-400" },
       { "title": "Infrastructure", "desc": "Building scalable, resilient infrastructure using IaaC and automation.", "color": "text-green-400" },
       { "title": "Security", "desc": "Applying security best practices across infrastructure, CI/CD, and runtime environments.", "color": "text-red-400" },
-      { "title": "Monitoring", "desc": "Implementing metrics, logs, and alerts to support fast detection and incident response.", "color": "text-purple-400" }
+      { "title": "Reliability", "desc": "Defining SLOs/SLIs, error budgets, and driving blameless postmortems.", "color": "text-yellow-400" }
+
     ]
   },
   "experience": {
@@ -65,7 +67,7 @@
       "Cloud Platforms": ["AWS", "DigitalOcean", "Google Cloud"],
       "Container & Orchestration": ["Docker", "Kubernetes", "Helm"],
       "Infrastructure as Code": ["Terraform", "CloudFormation", "Ansible"],
-      "CI/CD & DevOps": ["Jenkins", "Bitbucket Pipeline", "GitHub Actions", "Drone CI"],
+      "CI/CD & DevOps": ["Jenkins", "Bitbucket Pipeline", "GitHub Actions", "Drone CI", "ArgoCD"],
       "Observability": ["Prometheus", "Grafana", "ELK/EFK Stack", "Kibana/SumoLogic"],
       "Programming & Scripting": ["Python", "Go", "Bash", "JavaScript/TypeScript"]
     }
@@ -78,37 +80,50 @@
         "title": "Automated CI/CD Framework",
         "description": "Designed and standardized a CI/CD framework across Jenkins, Bitbucket Pipelines, and GitHub Actions to enable consistent, repeatable deployments at scale.",
         "technologies": ["CI/CD", "Automation", "Reliability", "GitOps"],
-        "impact": "Reduced deployment time by 50% and improved integration reliability across teams."
+        "impact": "Reduced deployment time by 50% and improved integration reliability across teams.",
+        "internal": true
       },
       {
         "title": "Automated EC2 Instance Patching",
         "description": "Built automated EC2 patching using AWS Patch Manager, Lambda, DynamoDB, CloudFormation and Python (Boto3), ensuring consistent security updates and compliance across environments.",
         "technologies": ["AWS", "Automation", "Security", "Compliance"],
-        "impact": "Improved security posture and reduced manual operational effort by 60%."
+        "impact": "Improved security posture and reduced manual operational effort by 60%.",
+        "internal": true
+      },
+      {
+        "title": "GitOps with ArgoCD",
+        "description": "Implemented declarative Kubernetes deployments using ArgoCD with auto-sync and self-healing, enabling consistent GitOps workflows.",
+        "technologies": ["ArgoCD", "GitOps", "Kubernetes", "CI/CD"],
+        "impact": "Achieved fully automated, drift-free deployments with self-healing capabilities.",
+        "internal": true
       },
       {
         "title": "Kubernetes Microservices Deployment",
         "description": "Deployed and operated FastAPI microservices on Kubernetes with rolling updates and HPA to support zero-downtime releases and traffic spikes.",
         "technologies": ["Kubernetes", "Availability", "Scaling", "Microservices"],
-        "impact": "Reduced downtime by 60% and cut deployment time by 90%."
+        "impact": "Reduced downtime by 60% and cut deployment time by 90%.",
+        "internal": true
       },
       {
         "title": "Cross-Platform DB Backup & Restore GUI App",
         "description": "Built a cross-platform database backup and restore GUI in Python to reduce manual intervention and simplify routine operational tasks.",
         "technologies": ["Automation", "Python", "Operations", "Toil Reduction"],
-        "impact": "Reduced support requests and manual database operations by 40%."
+        "impact": "Reduced support requests and manual database operations by 40%.",
+        "internal": true
       },
       {
         "title": "Customized Ubuntu ISO Creation",
         "description": "Created standardized Ubuntu ISOs with preconfigured tooling to accelerate system provisioning and enforce consistent environments.",
         "technologies": ["Platform Engineering", "Automation", "Linux"],
-        "impact": "Reduced setup time by 60% and improved onboarding reliability for new users."
+        "impact": "Reduced setup time by 60% and improved onboarding reliability for new users.",
+        "internal": true
       },
       {
         "title": "Jenkins Job Management Bot",
         "description": "Developed a Telegram bot to trigger and monitor Jenkins jobs remotely, improving operational responsiveness during releases and incidents.",
         "technologies": ["Automation", "CI/CD", "Productivity", "Incident Support"],
-        "impact": "Improved team productivity by enabling remote job control without constant desktop access."
+        "impact": "Improved team productivity by enabling remote job control without constant desktop access.",
+        "repo": "https://github.com/j1shnu/TeleJenBot"
       }
     ]
   },
@@ -127,7 +142,7 @@
   },
   "footer": {
     "name": "Jishnu Prasad",
-    "title": "Senior DevOps / Site Reliability Engineer",
+    "title": "Senior SRE / Platform Engineer",
     "copyright": "© 2026 Jishnu Prasad. Built with React, TypeScript, and Tailwind CSS. Deployed with love ❤️"
   },
   "navigation": {
