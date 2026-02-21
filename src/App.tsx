@@ -19,7 +19,7 @@ import { PortfolioData } from './types/portfolio';
 
 function App() {
   const [activeSection, setActiveSection] = useState('hero');
-  const [isVisible, setIsVisible] = useState<{[key: string]: boolean}>({});
+  const [isVisible, setIsVisible] = useState<{ [key: string]: boolean }>({});
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const data = portfolioData as PortfolioData;
@@ -45,6 +45,7 @@ function App() {
   // Throttle function for scroll handler
   const throttleRef = useRef<number | null>(null);
   const lastScrollTime = useRef<number>(0);
+  const visibleSectionsRef = useRef<Set<string>>(new Set());
   const throttleDelay = 100; // 100ms throttle
 
   // Extracted scroll check logic
@@ -57,7 +58,7 @@ function App() {
         const offsetBottom = offsetTop + element.offsetHeight;
         
         if (scrollPosition >= offsetTop && scrollPosition < offsetBottom) {
-          setActiveSection(section);
+          setActiveSection((prev) => (prev === section ? prev : section));
           break;
         }
       }
@@ -85,19 +86,23 @@ function App() {
   // Memoized Intersection Observer callback
   const handleIntersection = useCallback((entries: IntersectionObserverEntry[]) => {
     entries.forEach((entry) => {
+      if (!entry.isIntersecting) {
+        return;
+      }
+
       const sectionId = entry.target.id;
-      if (entry.isIntersecting) {
-        setIsVisible(prev => ({
+      if (visibleSectionsRef.current.has(sectionId)) {
+        return;
+      }
+
+      visibleSectionsRef.current.add(sectionId);
+      setIsVisible((prev) => {
+        if (prev[sectionId]) return prev;
+        return {
           ...prev,
           [sectionId]: true
-        }));
-      } else {
-        // Reset animation when section leaves viewport
-        setIsVisible(prev => ({
-          ...prev,
-          [sectionId]: false
-        }));
-      }
+        };
+      });
     });
   }, []);
 
@@ -137,6 +142,9 @@ function App() {
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
+      if (window.location.hash !== `#${sectionId}`) {
+        window.history.replaceState(null, '', `#${sectionId}`);
+      }
       setIsMobileMenuOpen(false);
     }
   }, []);
@@ -152,9 +160,13 @@ function App() {
             {/* Desktop Navigation */}
             <div className="hidden lg:flex space-x-6 xl:space-x-8">
               {navigationSections.map((section, index) => (
-                <button
+                <a
                   key={section}
-                  onClick={() => scrollToSection(section)}
+                  href={`#${section}`}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    scrollToSection(section);
+                  }}
                   className={`capitalize transition-all duration-300 transform hover:scale-110 animate-fade-in-up text-sm xl:text-base ${
                     activeSection === section 
                       ? 'text-blue-400 font-semibold' 
@@ -165,7 +177,7 @@ function App() {
                   }}
                 >
                   {section === 'hero' ? data.navigation.homeLabel : section}
-                </button>
+                </a>
               ))}
             </div>
 
@@ -174,6 +186,8 @@ function App() {
               onClick={() => setIsMobileMenuOpen(prev => !prev)}
               className="lg:hidden p-2 text-gray-400 hover:text-white transition-colors duration-300"
               aria-label="Toggle mobile menu"
+              aria-expanded={isMobileMenuOpen}
+              aria-controls="mobile-nav"
             >
               {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -181,12 +195,16 @@ function App() {
 
           {/* Mobile Navigation Menu */}
           {isMobileMenuOpen && (
-            <div className="lg:hidden absolute top-full left-0 right-0 bg-gray-900/98 backdrop-blur-md border-b border-gray-800/50 py-4">
+            <div id="mobile-nav" className="lg:hidden absolute top-full left-0 right-0 bg-gray-900/98 backdrop-blur-md border-b border-gray-800/50 py-4">
               <div className="flex flex-col space-y-3 px-4">
                 {navigationSections.map((section) => (
-                  <button
+                  <a
                     key={section}
-                    onClick={() => scrollToSection(section)}
+                    href={`#${section}`}
+                    onClick={(event) => {
+                      event.preventDefault();
+                      scrollToSection(section);
+                    }}
                     className={`capitalize text-left py-3.5 px-5 rounded-lg transition-all duration-300 font-bold text-base ${
                       activeSection === section 
                         ? 'text-blue-300 bg-blue-900/50 border-2 border-blue-500/60 shadow-xl shadow-blue-900/30' 
@@ -194,7 +212,7 @@ function App() {
                     }`}
                   >
                     {section === 'hero' ? data.navigation.homeLabel : section}
-                  </button>
+                  </a>
                 ))}
               </div>
             </div>
@@ -287,9 +305,14 @@ function App() {
           </div>
         </div>
         
-        <div className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce cursor-pointer" onClick={() => scrollToSection('about')}>
+        <button
+          type="button"
+          aria-label="Scroll to About section"
+          className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce cursor-pointer"
+          onClick={() => scrollToSection('about')}
+        >
           <ChevronDown size={28} className="sm:w-8 sm:h-8 text-gray-400 hover:text-blue-400 transition-colors duration-300" />
-        </div>
+        </button>
       </section>
 
       {/* About Section */}
