@@ -10,9 +10,12 @@ import {
   Shield,
   Activity,
   Terminal,
-  Menu,
-  X,
-  ExternalLink
+  ExternalLink,
+  Home,
+  User,
+  Briefcase,
+  Wrench,
+  FolderKanban
 } from 'lucide-react';
 import portfolioData from './data/portfolio.json';
 import { PortfolioData } from './types/portfolio';
@@ -20,7 +23,6 @@ import { PortfolioData } from './types/portfolio';
 function App() {
   const [activeSection, setActiveSection] = useState('hero');
   const [isVisible, setIsVisible] = useState<{ [key: string]: boolean }>({});
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const data = portfolioData as PortfolioData;
 
@@ -41,6 +43,15 @@ function App() {
     "LinkedIn": Linkedin,
     "GitHub": Github
   }), []);
+
+  const mobileDockItems = useMemo(() => ([
+    { section: 'hero', label: data.navigation.homeLabel, icon: Home },
+    { section: 'about', label: 'About', icon: User },
+    { section: 'experience', label: 'Experience', icon: Briefcase },
+    { section: 'skills', label: 'Skills', icon: Wrench },
+    { section: 'projects', label: 'Projects', icon: FolderKanban },
+    { section: 'contact', label: 'Contact', icon: Mail }
+  ]), [data.navigation.homeLabel]);
 
   // Throttle function for scroll handler
   const throttleRef = useRef<number | null>(null);
@@ -145,16 +156,15 @@ function App() {
       if (window.location.hash !== `#${sectionId}`) {
         window.history.replaceState(null, '', `#${sectionId}`);
       }
-      setIsMobileMenuOpen(false);
     }
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white overflow-x-hidden">
+    <div className="min-h-screen bg-gray-900 text-white overflow-x-hidden pb-24 lg:pb-0">
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-gray-900/95 backdrop-blur-md border-b border-gray-800/50 transition-all duration-300">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
-          <div className="flex justify-between items-center">
+          <div className="flex justify-center lg:justify-between items-center">
             <div className="text-lg sm:text-xl font-bold text-blue-400 animate-pulse">{data.personal.name}</div>
             
             {/* Desktop Navigation */}
@@ -180,43 +190,40 @@ function App() {
                 </a>
               ))}
             </div>
-
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setIsMobileMenuOpen(prev => !prev)}
-              className="lg:hidden p-2 text-gray-400 hover:text-white transition-colors duration-300"
-              aria-label="Toggle mobile menu"
-              aria-expanded={isMobileMenuOpen}
-              aria-controls="mobile-nav"
-            >
-              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
           </div>
+        </div>
+      </nav>
 
-          {/* Mobile Navigation Menu */}
-          {isMobileMenuOpen && (
-            <div id="mobile-nav" className="lg:hidden absolute top-full left-0 right-0 bg-gray-900/98 backdrop-blur-md border-b border-gray-800/50 py-4">
-              <div className="flex flex-col space-y-3 px-4">
-                {navigationSections.map((section) => (
-                  <a
-                    key={section}
-                    href={`#${section}`}
-                    onClick={(event) => {
-                      event.preventDefault();
-                      scrollToSection(section);
-                    }}
-                    className={`capitalize text-left py-3.5 px-5 rounded-lg transition-all duration-300 font-bold text-base ${
-                      activeSection === section 
-                        ? 'text-blue-300 bg-blue-900/50 border-2 border-blue-500/60 shadow-xl shadow-blue-900/30' 
-                        : 'text-white bg-gray-700/90 hover:text-blue-200 hover:bg-gray-600/90 border-2 border-gray-500/60 shadow-lg'
-                    }`}
-                  >
-                    {section === 'hero' ? data.navigation.homeLabel : section}
-                  </a>
-                ))}
-              </div>
-            </div>
-          )}
+      {/* Mobile Bottom Dock */}
+      <nav
+        className="fixed bottom-0 left-0 right-0 z-50 lg:hidden border-t border-gray-700/60 bg-gray-900/90 backdrop-blur-xl shadow-[0_-8px_30px_rgba(0,0,0,0.35)]"
+        style={{ paddingBottom: 'calc(0.4rem + env(safe-area-inset-bottom))' }}
+        aria-label="Mobile section navigation"
+      >
+        <div className="mx-auto grid max-w-3xl grid-cols-6 px-2 pt-2">
+          {mobileDockItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = activeSection === item.section;
+            return (
+              <a
+                key={item.section}
+                href={`#${item.section}`}
+                onClick={(event) => {
+                  event.preventDefault();
+                  scrollToSection(item.section);
+                }}
+                className={`mx-0.5 flex min-h-14 flex-col items-center justify-center rounded-lg px-1 py-1.5 text-[10px] leading-none transition-all duration-300 ${
+                  isActive
+                    ? 'bg-blue-500/20 text-blue-300 shadow-[0_0_20px_rgba(59,130,246,0.25)]'
+                    : 'text-gray-400 hover:bg-gray-800/80 hover:text-gray-100'
+                }`}
+                aria-current={isActive ? 'page' : undefined}
+              >
+                <Icon size={16} />
+                <span className="mt-1 whitespace-nowrap font-semibold">{item.label}</span>
+              </a>
+            );
+          })}
         </div>
       </nav>
 
