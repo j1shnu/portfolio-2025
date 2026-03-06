@@ -16,6 +16,7 @@ export interface Expertise {
   title: string;
   desc: string;
   color: string;
+  icon: string;
 }
 
 export interface About {
@@ -64,6 +65,7 @@ export interface ContactLink {
   label: string;
   href: string;
   color: string;
+  icon: string;
 }
 
 export interface Resume {

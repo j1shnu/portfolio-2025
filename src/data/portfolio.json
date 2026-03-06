@@ -19,11 +19,10 @@
       { "number": "100+", "label": "K8s Clusters Managed", "color": "text-orange-400" }
     ],
     "expertise": [
-      { "title": "Cloud(AWS)", "desc": "Designing and operating reliable, cost-efficient production workloads on AWS.", "color": "text-blue-400" },
-      { "title": "Infrastructure", "desc": "Building scalable, resilient infrastructure using IaaC and automation.", "color": "text-green-400" },
-      { "title": "Security", "desc": "Applying security best practices across infrastructure, CI/CD, and runtime environments.", "color": "text-red-400" },
-      { "title": "Reliability", "desc": "Defining SLOs/SLIs, error budgets, and driving blameless postmortems.", "color": "text-yellow-400" }
-
+      { "title": "Cloud(AWS)", "desc": "Designing and operating reliable, cost-efficient production workloads on AWS.", "color": "text-blue-400", "icon": "cloud" },
+      { "title": "Infrastructure", "desc": "Building scalable, resilient infrastructure using IaaC and automation.", "color": "text-green-400", "icon": "server" },
+      { "title": "Security", "desc": "Applying security best practices across infrastructure, CI/CD, and runtime environments.", "color": "text-red-400", "icon": "shield" },
+      { "title": "Reliability", "desc": "Defining SLOs/SLIs, error budgets, and driving blameless postmortems.", "color": "text-yellow-400", "icon": "activity" }
     ]
   },
   "experience": {
@@ -131,9 +130,9 @@
     "title": "Let's Connect",
     "description": "Open to senior DevOps and Site Reliability roles, platform engineering work, and operating production systems at scale — globally, with full relocation flexibility.",
     "links": [
-      { "label": "Email", "href": "mailto:jishnu.prasad4@gmail.com", "color": "from-red-600 to-red-700" },
-      { "label": "LinkedIn", "href": "https://linkedin.com/in/j1shnu", "color": "from-blue-600 to-blue-700" },
-      { "label": "GitHub", "href": "https://github.com/j1shnu", "color": "from-gray-600 to-gray-700" }
+      { "label": "Email", "href": "mailto:jishnu.prasad4@gmail.com", "color": "from-red-600 to-red-700", "icon": "mail" },
+      { "label": "LinkedIn", "href": "https://linkedin.com/in/j1shnu", "color": "from-blue-600 to-blue-700", "icon": "linkedin" },
+      { "label": "GitHub", "href": "https://github.com/j1shnu", "color": "from-gray-600 to-gray-700", "icon": "github" }
     ],
     "resume": {
       "href": "/Jishnu_Sr_SRE.pdf",
