@@ -1,5 +1,4 @@
-import { useEffect, useRef } from 'react';
-import { X } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 import { TerminalLine } from './types';
 import TerminalOutput from './TerminalOutput';
 import { PROMPT } from './constants';
@@ -23,6 +22,7 @@ export default function TerminalModal({
 }: TerminalModalProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -79,32 +79,45 @@ export default function TerminalModal({
       aria-modal="true"
     >
       <div
-        className="w-full max-w-2xl h-[70vh] max-h-[500px] bg-gray-950 rounded-lg border border-gray-700 shadow-2xl flex flex-col animate-in fade-in zoom-in-95 duration-200"
+        className={`bg-gray-950 border border-gray-700 shadow-2xl flex flex-col transition-all duration-300 ${
+          isFullscreen
+            ? 'w-full h-full rounded-none'
+            : 'w-full max-w-2xl h-[70vh] max-h-[500px] rounded-lg'
+        }`}
         onClick={handleContainerClick}
       >
         {/* Title bar */}
-        <div className="flex items-center justify-between px-4 py-2.5 border-b border-gray-800 shrink-0">
-          <div className="flex items-center gap-2">
-            <div className="flex gap-1.5">
-              <div className="w-3 h-3 rounded-full bg-red-500" />
-              <div className="w-3 h-3 rounded-full bg-yellow-500" />
-              <div className="w-3 h-3 rounded-full bg-green-500" />
-            </div>
-            <span className="text-gray-400 text-xs font-mono ml-2">
-              jishnu@portfolio — bash
-            </span>
+        <div className="flex items-center px-4 py-2.5 border-b border-gray-800 shrink-0">
+          <div className="flex gap-1.5">
+            <button
+              ref={closeButtonRef}
+              onClick={(e) => {
+                e.stopPropagation();
+                onClose();
+              }}
+              className="w-3 h-3 rounded-full bg-red-500 hover:bg-red-400 transition-colors"
+              aria-label="Close terminal"
+            />
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onClose();
+              }}
+              className="w-3 h-3 rounded-full bg-yellow-500 hover:bg-yellow-400 transition-colors"
+              aria-label="Minimize terminal"
+            />
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsFullscreen((prev) => !prev);
+              }}
+              className="w-3 h-3 rounded-full bg-green-500 hover:bg-green-400 transition-colors"
+              aria-label={isFullscreen ? 'Exit fullscreen' : 'Fullscreen terminal'}
+            />
           </div>
-          <button
-            ref={closeButtonRef}
-            onClick={(e) => {
-              e.stopPropagation();
-              onClose();
-            }}
-            className="text-gray-500 hover:text-gray-300 transition-colors p-1"
-            aria-label="Close terminal"
-          >
-            <X size={16} />
-          </button>
+          <span className="text-gray-400 text-xs font-mono ml-3">
+            jishnu@portfolio — bash
+          </span>
         </div>
 
         {/* Output */}
