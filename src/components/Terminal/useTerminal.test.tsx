@@ -208,20 +208,6 @@ describe('useTerminal', () => {
     expect(result.current.lines.length).toBe(welcomeLineCount);
   });
 
-  it('closes terminal on exit command', () => {
-    const { result } = renderHook(() => useTerminal(mockData));
-
-    act(() => result.current.open());
-    act(() => result.current.setInputValue('exit'));
-    act(() => {
-      result.current.handleKeyDown({
-        key: 'Enter',
-        preventDefault: () => {},
-      } as React.KeyboardEvent<HTMLInputElement>);
-    });
-    expect(result.current.isOpen).toBe(false);
-  });
-
   it('handles Tab autocompletion with single match', () => {
     const { result } = renderHook(() => useTerminal(mockData));
 
@@ -239,8 +225,8 @@ describe('useTerminal', () => {
     const { result } = renderHook(() => useTerminal(mockData));
     const initialLineCount = result.current.lines.length;
 
-    // 'e' matches 'exit' and 'experience'
-    act(() => result.current.setInputValue('e'));
+    // 'c' matches 'clear' and 'contact'
+    act(() => result.current.setInputValue('c'));
     act(() => {
       result.current.handleKeyDown({
         key: 'Tab',
@@ -248,7 +234,7 @@ describe('useTerminal', () => {
       } as React.KeyboardEvent<HTMLInputElement>);
     });
     expect(result.current.lines.length).toBeGreaterThan(initialLineCount);
-    expect(result.current.inputValue).toBe('e'); // not autocompleted
+    expect(result.current.inputValue).toBe('c'); // not autocompleted
   });
 
   it('does nothing on Tab with empty input', () => {

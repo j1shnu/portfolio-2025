@@ -11,7 +11,6 @@ const COMMANDS: Record<string, string> = {
   contact: 'Contact information',
   resume: 'Resume download link',
   clear: 'Clear terminal',
-  exit: 'Close terminal',
 };
 
 const COMMAND_NAMES = Object.keys(COMMANDS);
@@ -141,9 +140,91 @@ function easterEgg(input: string): CommandResult | null {
   }
 
   if (cmd === 'cd' || cmd.startsWith('cd ')) {
+    const target = cmd.slice(2).trim().replace(/\/$/, '');
+    const validSections = ['about', 'skills', 'experience', 'projects', 'contact', 'hero'];
+    if (target && validSections.includes(target)) {
+      return {
+        type: 'navigate',
+        lines: [`Navigating to ${target}...`],
+        target,
+      };
+    }
+    if (!target || target === '~' || target === '/') {
+      return {
+        type: 'navigate',
+        lines: ['Navigating to home...'],
+        target: 'hero',
+      };
+    }
+    if (target === 'resume.pdf') {
+      return {
+        type: 'error',
+        lines: ['resume.pdf is a file, not a directory. Use "open resume.pdf" to open it in a new tab or "wget resume.pdf" to download it.'],
+      };
+    }
+    return {
+      type: 'error',
+      lines: [`cd: ${target}: No such section. Try: ${validSections.join(', ')}`],
+    };
+  }
+
+  if (cmd === 'rm -rf /' || cmd === 'rm -rf /*') {
+    return {
+      type: 'error',
+      lines: ['Nice try. This portfolio is built to survive.'],
+    };
+  }
+
+  if (cmd === 'vim' || cmd.startsWith('vim ')) {
     return {
       type: 'output',
-      lines: ['You\'re already where you need to be. Try "help" instead.'],
+      lines: ['You\'ve entered vim. Good luck getting out. Just kidding — type "help".'],
+    };
+  }
+
+  if (cmd === 'nano' || cmd.startsWith('nano ')) {
+    return {
+      type: 'output',
+      lines: ['nano? A person of culture. But there\'s nothing to edit here.'],
+    };
+  }
+
+  if (cmd === 'ping google.com' || cmd.startsWith('ping ')) {
+    return {
+      type: 'output',
+      lines: ['PONG! 0ms — this portfolio is faster than Google.'],
+    };
+  }
+
+  if (cmd === 'ssh root@server' || cmd.startsWith('ssh ')) {
+    return {
+      type: 'error',
+      lines: ['Connection refused. You\'re not on the guest list.'],
+    };
+  }
+
+  if (cmd === 'uptime') {
+    const startYear = 2018;
+    const years = new Date().getFullYear() - startYear;
+    return {
+      type: 'output',
+      lines: [`Up since ${startYear}. ${years}+ years and counting.`],
+    };
+  }
+
+  if (cmd === 'open resume.pdf') {
+    return {
+      type: 'open',
+      lines: ['Opening resume in a new tab...'],
+      url: 'resume',
+    };
+  }
+
+  if (cmd === 'wget resume.pdf') {
+    return {
+      type: 'open',
+      lines: ['Downloading resume...'],
+      url: 'resume-download',
     };
   }
 
@@ -187,9 +268,6 @@ export function processCommand(
       return resumeCommand(data);
     case 'clear':
       return { type: 'clear', lines: [] };
-    case 'exit':
-    case 'quit':
-      return { type: 'exit', lines: [] };
     default:
       return {
         type: 'error',
@@ -200,4 +278,10 @@ export function processCommand(
 
 export function getCommandNames(): readonly string[] {
   return COMMAND_NAMES;
+}
+
+const FS_ENTRIES = ['about', 'skills', 'experience', 'projects', 'contact', 'hero', 'resume.pdf'] as const;
+
+export function getFsEntries(): readonly string[] {
+  return FS_ENTRIES;
 }

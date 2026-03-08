@@ -187,13 +187,6 @@ describe('processCommand', () => {
       expect(processCommand('clear', mockData).type).toBe('clear');
     });
 
-    it('returns exit signal', () => {
-      expect(processCommand('exit', mockData).type).toBe('exit');
-    });
-
-    it('returns exit signal for quit', () => {
-      expect(processCommand('quit', mockData).type).toBe('exit');
-    });
   });
 
   describe('empty and unknown input', () => {
@@ -243,10 +236,29 @@ describe('processCommand', () => {
       expect(result.lines[0]).toContain('jishnu-portfolio');
     });
 
-    it('cd returns friendly message', () => {
+    it('cd with valid section returns navigate', () => {
+      const result = processCommand('cd about', mockData);
+      expect(result.type).toBe('navigate');
+      expect(result.target).toBe('about');
+      expect(result.lines[0]).toContain('Navigating to about');
+    });
+
+    it('cd without target navigates to home', () => {
+      const result = processCommand('cd', mockData);
+      expect(result.type).toBe('navigate');
+      expect(result.target).toBe('hero');
+    });
+
+    it('cd ~ navigates to home', () => {
+      const result = processCommand('cd ~', mockData);
+      expect(result.type).toBe('navigate');
+      expect(result.target).toBe('hero');
+    });
+
+    it('cd with invalid section returns error', () => {
       const result = processCommand('cd /tmp', mockData);
-      expect(result.type).toBe('output');
-      expect(result.lines[0]).toContain('already where you need to be');
+      expect(result.type).toBe('error');
+      expect(result.lines[0]).toContain('No such section');
     });
 
     it('cat with valid section passes through to command handler', () => {
@@ -274,7 +286,6 @@ describe('getCommandNames', () => {
     const names = getCommandNames();
     expect(names).toContain('help');
     expect(names).toContain('about');
-    expect(names).toContain('exit');
-    expect(names.length).toBeGreaterThanOrEqual(10);
+    expect(names.length).toBeGreaterThanOrEqual(9);
   });
 });

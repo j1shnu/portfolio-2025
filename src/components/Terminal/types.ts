@@ -5,6 +5,8 @@ export interface TerminalLine {
 }
 
 export interface CommandResult {
-  readonly type: 'output' | 'error' | 'clear' | 'exit';
+  readonly type: 'output' | 'error' | 'clear' | 'navigate' | 'open';
   readonly lines: readonly string[];
+  readonly target?: string;
+  readonly url?: string;
 }

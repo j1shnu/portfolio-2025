@@ -1,9 +1,35 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, ReactNode } from 'react';
 import { TerminalLine } from './types';
 import { PROMPT } from './constants';
 
 interface TerminalOutputProps {
   readonly lines: readonly TerminalLine[];
+}
+
+const URL_REGEX = /(https?:\/\/[^\s]+|mailto:[^\s]+|\/[^\s]+\.pdf)/g;
+
+function linkify(text: string): ReactNode {
+  const parts = text.split(URL_REGEX);
+  if (parts.length === 1) return text;
+
+  return parts.map((part, i) => {
+    if (URL_REGEX.test(part)) {
+      URL_REGEX.lastIndex = 0;
+      return (
+        <a
+          key={i}
+          href={part}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-cyan-400 hover:text-cyan-300 underline underline-offset-2"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {part}
+        </a>
+      );
+    }
+    return part;
+  });
 }
 
 function LineContent({ line }: { readonly line: TerminalLine }) {
@@ -16,13 +42,13 @@ function LineContent({ line }: { readonly line: TerminalLine }) {
         </div>
       );
     case 'error':
-      return <div className="text-red-400">{line.content}</div>;
+      return <div className="text-red-400">{linkify(line.content)}</div>;
     case 'system':
-      return <div className="text-amber-400">{line.content}</div>;
+      return <div className="text-amber-400">{linkify(line.content)}</div>;
     case 'output':
       return (
         <div className="text-gray-300 whitespace-pre-wrap break-words">
-          {line.content}
+          {linkify(line.content)}
         </div>
       );
   }

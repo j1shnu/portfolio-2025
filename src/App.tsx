@@ -18,7 +18,7 @@ function App() {
   const [isVisible, setIsVisible] = useState<{ [key: string]: boolean }>({});
 
   const data = portfolioData as PortfolioData;
-  const terminal = useTerminal(data);
+  // terminal hook is initialized after scrollToSection below
 
   const navigationSections = useMemo(() => data.navigation.sections, [data.navigation.sections]);
 
@@ -118,6 +118,8 @@ function App() {
       }
     }
   }, []);
+
+  const terminal = useTerminal(data, scrollToSection);
 
   return (
     <div className="min-h-screen bg-gray-900 text-white overflow-x-hidden pb-24 lg:pb-0">
