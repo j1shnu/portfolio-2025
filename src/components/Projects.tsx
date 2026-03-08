@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Github, ExternalLink, Shield } from 'lucide-react';
 import { Projects as ProjectsType } from '../types/portfolio';
 
@@ -63,4 +64,4 @@ function Projects({ isVisible, projects }: ProjectsProps) {
   );
 }
 
-export default Projects;
+export default memo(Projects);

@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import portfolioData from './data/portfolio.json';
 import { PortfolioData } from './types/portfolio';
 import Navbar from './components/Navbar';
@@ -13,101 +13,54 @@ import TerminalButton from './components/Terminal/TerminalButton';
 import TerminalModal from './components/Terminal/TerminalModal';
 import { useTerminal } from './components/Terminal/useTerminal';
 
+const data = portfolioData as PortfolioData;
+const navigationSections = data.navigation.sections;
+
 function App() {
   const [activeSection, setActiveSection] = useState('hero');
   const [isVisible, setIsVisible] = useState<{ [key: string]: boolean }>({});
-
-  const data = portfolioData as PortfolioData;
-
-
-  const navigationSections = useMemo(() => data.navigation.sections, [data.navigation.sections]);
-
-  // Throttle function for scroll handler
-  const throttleRef = useRef<number | null>(null);
-  const lastScrollTime = useRef<number>(0);
   const visibleSectionsRef = useRef<Set<string>>(new Set());
-  const throttleDelay = 100;
 
-  const performScrollCheck = useCallback(() => {
-    const scrollPosition = window.scrollY + 100;
+  useEffect(() => {
+    // Single observer for fade-in animations (fires once per section)
+    const visibilityObserver = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          const sectionId = entry.target.id;
+          if (visibleSectionsRef.current.has(sectionId)) continue;
+          visibleSectionsRef.current.add(sectionId);
+          setIsVisible((prev) => (prev[sectionId] ? prev : { ...prev, [sectionId]: true }));
+        }
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+    );
+
+    // Single observer for active section tracking (fires continuously)
+    const navObserver = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setActiveSection((prev) => (prev === entry.target.id ? prev : entry.target.id));
+          }
+        }
+      },
+      { threshold: 0.3 }
+    );
+
     for (const section of navigationSections) {
       const element = document.getElementById(section);
       if (element) {
-        const offsetTop = element.offsetTop;
-        const offsetBottom = offsetTop + element.offsetHeight;
-
-        if (scrollPosition >= offsetTop && scrollPosition < offsetBottom) {
-          setActiveSection((prev) => (prev === section ? prev : section));
-          break;
-        }
+        visibilityObserver.observe(element);
+        navObserver.observe(element);
       }
     }
-  }, [navigationSections]);
-
-  const handleScroll = useCallback(() => {
-    const now = Date.now();
-    if (now - lastScrollTime.current < throttleDelay) {
-      if (throttleRef.current) {
-        cancelAnimationFrame(throttleRef.current);
-      }
-      throttleRef.current = requestAnimationFrame(() => {
-        if (Date.now() - lastScrollTime.current >= throttleDelay) {
-          performScrollCheck();
-        }
-      });
-      return;
-    }
-    lastScrollTime.current = now;
-    performScrollCheck();
-  }, [performScrollCheck]);
-
-  const handleIntersection = useCallback((entries: IntersectionObserverEntry[]) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) {
-        return;
-      }
-
-      const sectionId = entry.target.id;
-      if (visibleSectionsRef.current.has(sectionId)) {
-        return;
-      }
-
-      visibleSectionsRef.current.add(sectionId);
-      setIsVisible((prev) => {
-        if (prev[sectionId]) return prev;
-        return {
-          ...prev,
-          [sectionId]: true
-        };
-      });
-    });
-  }, []);
-
-  const observerOptions = useMemo(() => ({
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-  }), []);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(handleIntersection, observerOptions);
-
-    navigationSections.forEach(section => {
-      const element = document.getElementById(section);
-      if (element) observer.observe(element);
-    });
-
-    performScrollCheck();
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
-      if (throttleRef.current) {
-        cancelAnimationFrame(throttleRef.current);
-      }
-      observer.disconnect();
+      visibilityObserver.disconnect();
+      navObserver.disconnect();
     };
-  }, [navigationSections, handleScroll, handleIntersection, observerOptions, performScrollCheck]);
+  }, []);
 
   const scrollToSection = useCallback((sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -139,18 +92,20 @@ function App() {
         name={data.personal.name}
       />
 
-      <Hero
-        isVisible={!!isVisible.hero}
-        personal={data.personal}
-        resume={data.contact.resume}
-        scrollToSection={scrollToSection}
-      />
+      <main>
+        <Hero
+          isVisible={!!isVisible.hero}
+          personal={data.personal}
+          resume={data.contact.resume}
+          scrollToSection={scrollToSection}
+        />
 
-      <About isVisible={!!isVisible.about} about={data.about} />
-      <Experience isVisible={!!isVisible.experience} experience={data.experience} />
-      <Skills isVisible={!!isVisible.skills} skills={data.skills} />
-      <Projects isVisible={!!isVisible.projects} projects={data.projects} />
-      <Contact isVisible={!!isVisible.contact} contact={data.contact} />
+        <About isVisible={!!isVisible.about} about={data.about} />
+        <Experience isVisible={!!isVisible.experience} experience={data.experience} />
+        <Skills isVisible={!!isVisible.skills} skills={data.skills} />
+        <Projects isVisible={!!isVisible.projects} projects={data.projects} />
+        <Contact isVisible={!!isVisible.contact} contact={data.contact} />
+      </main>
       <Footer footer={data.footer} />
 
       <TerminalButton onClick={terminal.open} />

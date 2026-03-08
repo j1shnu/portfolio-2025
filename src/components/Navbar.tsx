@@ -21,10 +21,10 @@ function Navbar({ activeSection, scrollToSection, navigationSections, homeLabel,
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-gray-900/95 backdrop-blur-md border-b border-gray-800/50 transition-all duration-300">
+      <nav aria-label="Main navigation" className="fixed top-0 left-0 right-0 z-50 bg-gray-900/95 backdrop-blur-md border-b border-gray-800/50 transition-all duration-300">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
           <div className="flex justify-center lg:justify-between items-center">
-            <div className="text-lg sm:text-xl font-bold text-blue-400 animate-pulse">{name}</div>
+            <div className="text-lg sm:text-xl font-bold text-blue-400">{name}</div>
 
             <div className="hidden lg:flex space-x-6 xl:space-x-8">
               {navigationSections.map((section, index) => (
