@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Cloud, Server, Shield, Activity } from 'lucide-react';
 import { About as AboutType } from '../types/portfolio';
 
@@ -63,4 +64,4 @@ function About({ isVisible, about }: AboutProps) {
   );
 }
 
-export default About;
+export default memo(About);

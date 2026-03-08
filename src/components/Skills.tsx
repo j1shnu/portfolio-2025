@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Skills as SkillsType } from '../types/portfolio';
 
 interface SkillsProps {
@@ -38,4 +39,4 @@ function Skills({ isVisible, skills }: SkillsProps) {
   );
 }
 
-export default Skills;
+export default memo(Skills);

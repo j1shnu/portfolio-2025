@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Mail, Linkedin, Github, Download } from 'lucide-react';
 import { Contact as ContactType } from '../types/portfolio';
 
@@ -64,4 +65,4 @@ function Contact({ isVisible, contact }: ContactProps) {
   );
 }
 
-export default Contact;
+export default memo(Contact);

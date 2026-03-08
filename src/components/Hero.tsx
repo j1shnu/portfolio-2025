@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Mail, Download, ChevronDown, Cloud, Server, Terminal } from 'lucide-react';
 import { PersonalInfo, Resume } from '../types/portfolio';
 
@@ -12,8 +13,8 @@ function Hero({ isVisible, personal, resume, scrollToSection }: HeroProps) {
   return (
     <section id="hero" className="min-h-screen flex items-center justify-center relative overflow-hidden px-4 sm:px-6">
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-20 sm:-top-40 -right-20 sm:-right-40 w-40 sm:w-80 h-40 sm:h-80 bg-blue-600/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute -bottom-20 sm:-bottom-40 -left-20 sm:-left-40 w-40 sm:w-80 h-40 sm:h-80 bg-purple-600/10 rounded-full blur-3xl animate-pulse" style={{animationDelay: '2s'}}></div>
+        <div className="absolute -top-20 sm:-top-40 -right-20 sm:-right-40 w-40 sm:w-80 h-40 sm:h-80 bg-blue-600/10 rounded-full blur-3xl"></div>
+        <div className="absolute -bottom-20 sm:-bottom-40 -left-20 sm:-left-40 w-40 sm:w-80 h-40 sm:h-80 bg-purple-600/10 rounded-full blur-3xl"></div>
       </div>
 
       <div className="max-w-6xl mx-auto text-center relative z-10 w-full">
@@ -31,7 +32,7 @@ function Hero({ isVisible, personal, resume, scrollToSection }: HeroProps) {
                       height="224"
                       className="w-full h-full object-cover rounded-full transition-all duration-500 hover:scale-105"
                       loading="eager"
-                      fetchPriority="high"
+                      fetchpriority="high"
                       decoding="async"
                     />
                   </picture>
@@ -103,4 +104,4 @@ function Hero({ isVisible, personal, resume, scrollToSection }: HeroProps) {
   );
 }
 
-export default Hero;
+export default memo(Hero);

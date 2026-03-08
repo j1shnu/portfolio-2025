@@ -14,9 +14,22 @@ export default {
     'to-blue-700',
     'from-gray-600',
     'to-gray-700',
+    'text-emerald-400',
+    'text-amber-400',
+    'text-cyan-400',
   ],
   theme: {
-    extend: {},
+    extend: {
+      keyframes: {
+        'ripple-ring': {
+          '0%': { transform: 'scale(1)', opacity: '1' },
+          '100%': { transform: 'scale(1.8)', opacity: '0' },
+        },
+      },
+      animation: {
+        'ripple-ring': 'ripple-ring 1.2s ease-out infinite',
+      },
+    },
   },
   plugins: [],
 };
