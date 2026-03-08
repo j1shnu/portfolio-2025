@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, lazy, Suspense } from 'react';
 import portfolioData from './data/portfolio.json';
 import { PortfolioData } from './types/portfolio';
 import Navbar from './components/Navbar';
@@ -10,8 +10,9 @@ import Projects from './components/Projects';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import TerminalButton from './components/Terminal/TerminalButton';
-import TerminalModal from './components/Terminal/TerminalModal';
 import { useTerminal } from './components/Terminal/useTerminal';
+
+const TerminalModal = lazy(() => import('./components/Terminal/TerminalModal'));
 
 const data = portfolioData as PortfolioData;
 const navigationSections = data.navigation.sections;
@@ -109,14 +110,18 @@ function App() {
       <Footer footer={data.footer} />
 
       <TerminalButton onClick={terminal.open} />
-      <TerminalModal
-        isOpen={terminal.isOpen}
-        onClose={terminal.close}
-        lines={terminal.lines}
-        inputValue={terminal.inputValue}
-        onInputChange={terminal.setInputValue}
-        onKeyDown={terminal.handleKeyDown}
-      />
+      {terminal.isOpen && (
+        <Suspense fallback={null}>
+          <TerminalModal
+            isOpen={terminal.isOpen}
+            onClose={terminal.close}
+            lines={terminal.lines}
+            inputValue={terminal.inputValue}
+            onInputChange={terminal.setInputValue}
+            onKeyDown={terminal.handleKeyDown}
+          />
+        </Suspense>
+      )}
     </div>
   );
 }
