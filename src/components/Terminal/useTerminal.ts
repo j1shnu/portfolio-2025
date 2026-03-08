@@ -34,7 +34,8 @@ export function useTerminal(data: PortfolioData, scrollToSection?: (sectionId: s
       const trimmed = input.trim();
       if (!trimmed) return;
 
-      commandHistory.current = [...commandHistory.current, trimmed];
+      const MAX_HISTORY = 200;
+      commandHistory.current = [...commandHistory.current, trimmed].slice(-MAX_HISTORY);
       setHistoryIndex(-1);
 
       const inputLine: TerminalLine = {

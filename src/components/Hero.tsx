@@ -31,7 +31,7 @@ function Hero({ isVisible, personal, resume, scrollToSection }: HeroProps) {
                       height="224"
                       className="w-full h-full object-cover rounded-full transition-all duration-500 hover:scale-105"
                       loading="eager"
-                      fetchPriority="high"
+                      fetchpriority="high"
                       decoding="async"
                     />
                   </picture>

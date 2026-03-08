@@ -18,7 +18,7 @@ function App() {
   const [isVisible, setIsVisible] = useState<{ [key: string]: boolean }>({});
 
   const data = portfolioData as PortfolioData;
-  // terminal hook is initialized after scrollToSection below
+
 
   const navigationSections = useMemo(() => data.navigation.sections, [data.navigation.sections]);
 

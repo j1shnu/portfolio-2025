@@ -104,7 +104,7 @@ export default function TerminalModal({
                 onClose();
               }}
               className="w-3 h-3 rounded-full bg-yellow-500 hover:bg-yellow-400 transition-colors"
-              aria-label="Minimize terminal"
+              aria-label="Close terminal"
             />
             <button
               onClick={(e) => {

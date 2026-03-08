@@ -6,26 +6,34 @@ interface TerminalOutputProps {
   readonly lines: readonly TerminalLine[];
 }
 
-const URL_REGEX = /(https?:\/\/[^\s]+|mailto:[^\s]+|\/[^\s]+\.pdf)/g;
+const SPLIT_REGEX = /(https?:\/\/[^\s]+|mailto:[^\s]+|\/[^\s]+\.pdf)/g;
+const TEST_REGEX = /^(https?:\/\/|mailto:|\/.*\.pdf$)/;
+
+function stripTrailingPunct(url: string): string {
+  return url.replace(/[.,;:!?)'"]+$/, '');
+}
 
 function linkify(text: string): ReactNode {
-  const parts = text.split(URL_REGEX);
+  const parts = text.split(SPLIT_REGEX);
   if (parts.length === 1) return text;
 
   return parts.map((part, i) => {
-    if (URL_REGEX.test(part)) {
-      URL_REGEX.lastIndex = 0;
+    if (TEST_REGEX.test(part)) {
+      const href = stripTrailingPunct(part);
+      const trailing = part.slice(href.length);
       return (
-        <a
-          key={i}
-          href={part}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-cyan-400 hover:text-cyan-300 underline underline-offset-2"
-          onClick={(e) => e.stopPropagation()}
-        >
-          {part}
-        </a>
+        <span key={i}>
+          <a
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-cyan-400 hover:text-cyan-300 underline underline-offset-2"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {href}
+          </a>
+          {trailing}
+        </span>
       );
     }
     return part;

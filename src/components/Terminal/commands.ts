@@ -103,131 +103,61 @@ function resumeCommand(data: PortfolioData): CommandResult {
   };
 }
 
+const NAV_SECTIONS = ['about', 'skills', 'experience', 'projects', 'contact', 'hero'];
+const CAT_SECTIONS = ['about', 'skills', 'experience', 'projects', 'contact', 'resume'];
+
+function handleCat(cmd: string): CommandResult | null {
+  const target = cmd.slice(4).trim().replace(/\/$/, '');
+  if (CAT_SECTIONS.includes(target)) return null;
+  return { type: 'error', lines: [`cat: ${target}: No such file or directory`] };
+}
+
+function handleCd(cmd: string): CommandResult {
+  const target = cmd.slice(2).trim().replace(/\/$/, '');
+  if (target && NAV_SECTIONS.includes(target)) {
+    return { type: 'navigate', lines: [`Navigating to ${target}...`], target };
+  }
+  if (!target || target === '~' || target === '/') {
+    return { type: 'navigate', lines: ['Navigating to home...'], target: 'hero' };
+  }
+  if (target === 'resume.pdf') {
+    return { type: 'error', lines: ['resume.pdf is a file, not a directory. Use "open resume.pdf" to open it in a new tab or "wget resume.pdf" to download it.'] };
+  }
+  return { type: 'error', lines: [`cd: ${target}: No such section. Try: ${NAV_SECTIONS.join(', ')}`] };
+}
+
+function handleUptime(): CommandResult {
+  const startYear = 2018;
+  const years = new Date().getFullYear() - startYear;
+  return { type: 'output', lines: [`Up since ${startYear}. ${years}+ years and counting.`] };
+}
+
+type EggEntry = readonly [
+  match: (cmd: string) => boolean,
+  handler: (cmd: string) => CommandResult | null,
+];
+
+const EASTER_EGGS: readonly EggEntry[] = [
+  [(c) => c === 'sudo' || c.startsWith('sudo '), () => ({ type: 'error', lines: ['Nice try, but you don\'t have root access here.'] })],
+  [(c) => c === 'ls', () => ({ type: 'output', lines: ['about/  experience/  skills/  projects/  contact/  resume.pdf'] })],
+  [(c) => c === 'pwd', () => ({ type: 'output', lines: ['/home/visitor/jishnu-portfolio'] })],
+  [(c) => c.startsWith('cat '), handleCat],
+  [(c) => c === 'cd' || c.startsWith('cd '), handleCd],
+  [(c) => c === 'rm -rf /' || c === 'rm -rf /*', () => ({ type: 'error', lines: ['Nice try. This portfolio is built to survive.'] })],
+  [(c) => c === 'vim' || c.startsWith('vim '), () => ({ type: 'output', lines: ['You\'ve entered vim. Good luck getting out. Just kidding — type "help".'] })],
+  [(c) => c === 'nano' || c.startsWith('nano '), () => ({ type: 'output', lines: ['nano? A person of culture. But there\'s nothing to edit here.'] })],
+  [(c) => c.startsWith('ping '), () => ({ type: 'output', lines: ['PONG! 0ms — this portfolio is faster than Google.'] })],
+  [(c) => c.startsWith('ssh '), () => ({ type: 'error', lines: ['Connection refused. You\'re not on the guest list.'] })],
+  [(c) => c === 'uptime', handleUptime],
+  [(c) => c === 'open resume.pdf', () => ({ type: 'open', lines: ['Opening resume in a new tab...'], url: 'resume' })],
+  [(c) => c === 'wget resume.pdf', () => ({ type: 'open', lines: ['Downloading resume...'], url: 'resume-download' })],
+];
+
 function easterEgg(input: string): CommandResult | null {
   const cmd = input.trim().toLowerCase();
-
-  if (cmd === 'sudo' || cmd.startsWith('sudo ')) {
-    return {
-      type: 'error',
-      lines: ['Nice try, but you don\'t have root access here.'],
-    };
+  for (const [match, handler] of EASTER_EGGS) {
+    if (match(cmd)) return handler(cmd);
   }
-
-  if (cmd === 'ls') {
-    return {
-      type: 'output',
-      lines: ['about/  experience/  skills/  projects/  contact/  resume.pdf'],
-    };
-  }
-
-  if (cmd === 'pwd') {
-    return {
-      type: 'output',
-      lines: ['/home/visitor/jishnu-portfolio'],
-    };
-  }
-
-  if (cmd.startsWith('cat ')) {
-    const target = cmd.slice(4).trim().replace(/\/$/, '');
-    const validSections = ['about', 'skills', 'experience', 'projects', 'contact', 'resume'];
-    if (validSections.includes(target)) {
-      return null; // let the main handler process it as a regular command
-    }
-    return {
-      type: 'error',
-      lines: [`cat: ${target}: No such file or directory`],
-    };
-  }
-
-  if (cmd === 'cd' || cmd.startsWith('cd ')) {
-    const target = cmd.slice(2).trim().replace(/\/$/, '');
-    const validSections = ['about', 'skills', 'experience', 'projects', 'contact', 'hero'];
-    if (target && validSections.includes(target)) {
-      return {
-        type: 'navigate',
-        lines: [`Navigating to ${target}...`],
-        target,
-      };
-    }
-    if (!target || target === '~' || target === '/') {
-      return {
-        type: 'navigate',
-        lines: ['Navigating to home...'],
-        target: 'hero',
-      };
-    }
-    if (target === 'resume.pdf') {
-      return {
-        type: 'error',
-        lines: ['resume.pdf is a file, not a directory. Use "open resume.pdf" to open it in a new tab or "wget resume.pdf" to download it.'],
-      };
-    }
-    return {
-      type: 'error',
-      lines: [`cd: ${target}: No such section. Try: ${validSections.join(', ')}`],
-    };
-  }
-
-  if (cmd === 'rm -rf /' || cmd === 'rm -rf /*') {
-    return {
-      type: 'error',
-      lines: ['Nice try. This portfolio is built to survive.'],
-    };
-  }
-
-  if (cmd === 'vim' || cmd.startsWith('vim ')) {
-    return {
-      type: 'output',
-      lines: ['You\'ve entered vim. Good luck getting out. Just kidding — type "help".'],
-    };
-  }
-
-  if (cmd === 'nano' || cmd.startsWith('nano ')) {
-    return {
-      type: 'output',
-      lines: ['nano? A person of culture. But there\'s nothing to edit here.'],
-    };
-  }
-
-  if (cmd === 'ping google.com' || cmd.startsWith('ping ')) {
-    return {
-      type: 'output',
-      lines: ['PONG! 0ms — this portfolio is faster than Google.'],
-    };
-  }
-
-  if (cmd === 'ssh root@server' || cmd.startsWith('ssh ')) {
-    return {
-      type: 'error',
-      lines: ['Connection refused. You\'re not on the guest list.'],
-    };
-  }
-
-  if (cmd === 'uptime') {
-    const startYear = 2018;
-    const years = new Date().getFullYear() - startYear;
-    return {
-      type: 'output',
-      lines: [`Up since ${startYear}. ${years}+ years and counting.`],
-    };
-  }
-
-  if (cmd === 'open resume.pdf') {
-    return {
-      type: 'open',
-      lines: ['Opening resume in a new tab...'],
-      url: 'resume',
-    };
-  }
-
-  if (cmd === 'wget resume.pdf') {
-    return {
-      type: 'open',
-      lines: ['Downloading resume...'],
-      url: 'resume-download',
-    };
-  }
-
   return null;
 }
 
