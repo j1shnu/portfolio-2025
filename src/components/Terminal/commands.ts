@@ -13,7 +13,7 @@ const COMMANDS: Record<string, string> = {
   clear: 'Clear terminal',
 };
 
-const COMMAND_NAMES = Object.keys(COMMANDS);
+const COMMAND_NAMES = [...Object.keys(COMMANDS), 'cd', 'open', 'wget'];
 
 function helpCommand(): CommandResult {
   const lines = [

@@ -286,6 +286,9 @@ describe('getCommandNames', () => {
     const names = getCommandNames();
     expect(names).toContain('help');
     expect(names).toContain('about');
-    expect(names.length).toBeGreaterThanOrEqual(9);
+    expect(names).toContain('cd');
+    expect(names).toContain('open');
+    expect(names).toContain('wget');
+    expect(names.length).toBeGreaterThanOrEqual(12);
   });
 });
