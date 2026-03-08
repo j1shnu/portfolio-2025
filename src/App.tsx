@@ -9,12 +9,16 @@ import Skills from './components/Skills';
 import Projects from './components/Projects';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import TerminalButton from './components/Terminal/TerminalButton';
+import TerminalModal from './components/Terminal/TerminalModal';
+import { useTerminal } from './components/Terminal/useTerminal';
 
 function App() {
   const [activeSection, setActiveSection] = useState('hero');
   const [isVisible, setIsVisible] = useState<{ [key: string]: boolean }>({});
 
   const data = portfolioData as PortfolioData;
+  const terminal = useTerminal(data);
 
   const navigationSections = useMemo(() => data.navigation.sections, [data.navigation.sections]);
 
@@ -146,6 +150,16 @@ function App() {
       <Projects isVisible={!!isVisible.projects} projects={data.projects} />
       <Contact isVisible={!!isVisible.contact} contact={data.contact} />
       <Footer footer={data.footer} />
+
+      <TerminalButton onClick={terminal.open} />
+      <TerminalModal
+        isOpen={terminal.isOpen}
+        onClose={terminal.close}
+        lines={terminal.lines}
+        inputValue={terminal.inputValue}
+        onInputChange={terminal.setInputValue}
+        onKeyDown={terminal.handleKeyDown}
+      />
     </div>
   );
 }

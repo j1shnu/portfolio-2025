@@ -14,6 +14,8 @@ export default {
     'to-blue-700',
     'from-gray-600',
     'to-gray-700',
+    'text-emerald-400',
+    'text-amber-400',
   ],
   theme: {
     extend: {},
