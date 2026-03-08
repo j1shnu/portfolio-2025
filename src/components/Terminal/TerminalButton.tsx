@@ -12,7 +12,9 @@ export default function TerminalButton({ onClick }: TerminalButtonProps) {
       aria-label="Open terminal"
       title="Open Terminal"
     >
-      <Terminal size={22} className="group-hover:scale-110 transition-transform" />
+      <span className="absolute inset-0 rounded-full border border-emerald-400/0 group-hover:border-emerald-400/60 group-hover:animate-ripple-ring" />
+      <span className="absolute inset-0 rounded-full border border-emerald-400/0 group-hover:border-emerald-400/40 group-hover:animate-ripple-ring group-hover:[animation-delay:0.4s]" />
+      <Terminal size={22} className="relative group-hover:scale-110 transition-transform" />
     </button>
   );
 }
