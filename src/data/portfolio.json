@@ -118,6 +118,13 @@
         "internal": true
       },
       {
+        "title": "K8sweep",
+        "description": "A terminal UI for cleaning up Kubernetes pods: browse, filter, and batch-delete dirty pods (Failed, Completed, Evicted, CrashLoopBackOff, OOMKilled) interactively.",
+        "technologies": ["Kubernetes", "Automation", "Cleanup", "Platform Engineering"],
+        "impact": "Reduced cluster resource clutter and improved day-to-day operational hygiene.",
+        "repo": "https://github.com/j1shnu/k8sweep"
+      },
+      {
         "title": "Jenkins Job Management Bot",
         "description": "Developed a Telegram bot to trigger and monitor Jenkins jobs remotely, improving operational responsiveness during releases and incidents.",
         "technologies": ["Automation", "CI/CD", "Productivity", "Incident Support"],
